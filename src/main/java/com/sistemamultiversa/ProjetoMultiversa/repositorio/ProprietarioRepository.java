@@ -9,3 +9,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProprietarioRepository extends JpaRepository<ProprietarioModel, Long> {
 }
+
