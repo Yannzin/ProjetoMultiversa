@@ -4,10 +4,12 @@ package com.sistemamultiversa.ProjetoMultiversa.model;
 import jakarta.persistence.*;
         import lombok.Data;
 
+import java.util.Set;
+
 @Entity
-@Table(name = "Inquilino")
+@Table(name = "Proprietario")
 @Data
-public class InquilinoModel {
+public class ProprietarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,6 @@ public class InquilinoModel {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "imovel_id", nullable = false)
-    private ImovelModel imovel;
+    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
+    private Set<ImovelModel> imoveis;
 }
