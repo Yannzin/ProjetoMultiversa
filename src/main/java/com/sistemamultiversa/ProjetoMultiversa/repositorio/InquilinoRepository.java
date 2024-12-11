@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-    public interface InquilinoRepository extends JpaRepository<InquilinoModel, Long> {
-    }
-
-
+public interface InquilinoRepository extends JpaRepository<InquilinoModel, Long> {
+}

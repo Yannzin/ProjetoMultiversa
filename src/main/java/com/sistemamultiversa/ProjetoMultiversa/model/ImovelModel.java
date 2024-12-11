@@ -14,20 +14,19 @@ public class ImovelModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String endereco;
 
-    @Column(nullable = false)
+    @Column
     private Double valorAluguel;
 
     @ManyToOne
-    @JoinColumn(name = "proprietario_id", nullable = false)
+    @JoinColumn(name = "proprietario_id")
     private ProprietarioModel proprietario;
 
     @OneToMany(mappedBy = "imovel", cascade = CascadeType.ALL)
     private Set<InquilinoModel> inquilinos;
 }
-
 /*
 _________________________________________________
 @Entity

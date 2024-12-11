@@ -13,13 +13,13 @@ public class InquilinoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String nome;
 
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(unique = true, length = 100)
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "imovel_id", nullable = false)
+    @JoinColumn(name = "imovel_id")
     private ImovelModel imovel;
 }
