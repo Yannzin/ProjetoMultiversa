@@ -3,18 +3,32 @@ package com.sistemamultiversa.ProjetoMultiversa.controller;
 
 import com.sistemamultiversa.ProjetoMultiversa.model.ProprietarioModel;
 import com.sistemamultiversa.ProjetoMultiversa.service.ProprietarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/proprietarios")
+@RequestMapping("/proprietario")
 public class ProprietarioController {
 
-    @Autowired
-    private ProprietarioService proprietarioService;
+    private final ProprietarioService proprietarioService;
+
+    public ProprietarioController(ProprietarioService proprietarioService) {
+        this.proprietarioService = proprietarioService;
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ProprietarioModel> salvar(@RequestBody ProprietarioModel proprietario) {
+        if (proprietario.getEmail() == null) {
+            // Handle null email: throw exception, set default value, etc.
+            throw new IllegalArgumentException("Email cannot be null");
+        }
+        ProprietarioModel proprietarioModel1 = proprietarioService.salvar(proprietario);
+        return new ResponseEntity<>(proprietarioModel1, HttpStatus.CREATED);
+    }
+    
 
     @GetMapping
     public List<ProprietarioModel> listarTodos() {
@@ -27,11 +41,7 @@ public class ProprietarioController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-    @PostMapping
-    public ProprietarioModel salvar(@RequestBody ProprietarioModel proprietario) {
-        return proprietarioService.salvar(proprietario);
-    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
