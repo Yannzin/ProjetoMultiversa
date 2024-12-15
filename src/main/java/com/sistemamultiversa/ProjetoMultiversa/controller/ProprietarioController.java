@@ -19,16 +19,32 @@ public class ProprietarioController {
         this.proprietarioService = proprietarioService;
     }
 
+
     @PostMapping("/create")
     public ResponseEntity<ProprietarioModel> salvar(@RequestBody ProprietarioModel proprietario) {
-        if (proprietario.getEmail() == null) {
-            // Handle null email: throw exception, set default value, etc.
-            throw new IllegalArgumentException("Email cannot be null");
+
+        // Validar se os campos essenciais estão presentes
+        if (proprietario.getNome() == null || proprietario.getNome().isEmpty()) {
+            throw new IllegalArgumentException("Nome cannot be null or empty");
         }
-        ProprietarioModel proprietarioModel1 = proprietarioService.salvar(proprietario);
-        return new ResponseEntity<>(proprietarioModel1, HttpStatus.CREATED);
+        if (proprietario.getEmail() == null || proprietario.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
+        // Validar os imóveis, se necessário
+        if (proprietario.getImoveis() != null && !proprietario.getImoveis().isEmpty()) {
+            // Exemplo de validação: verificar duplicatas ou outros critérios nos imóveis
+            // proprietario.getImoveis().forEach(imovel -> validarImovel(imovel));
+        }
+
+        // Salvar o proprietário
+        ProprietarioModel proprietarioSalvo = proprietarioService.salvar(proprietario);
+
+        return new ResponseEntity<>(proprietarioSalvo, HttpStatus.CREATED);
     }
-    
+
+
+
 
     @GetMapping
     public List<ProprietarioModel> listarTodos() {
@@ -54,9 +70,16 @@ public class ProprietarioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ProprietarioModel> update(@PathVariable Long id, @RequestBody ProprietarioModel aluno) {
+        return ResponseEntity.ok(ProprietarioService.update(id, aluno));
+    }
+
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        proprietarioService.deletar(id);
+        ProprietarioService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

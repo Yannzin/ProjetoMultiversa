@@ -16,6 +16,7 @@ public class ProprietarioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @lombok.Getter
     @Column(nullable = false, length = 100)
     private String nome;
 
@@ -25,10 +26,14 @@ public class ProprietarioModel {
     @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
     private Set<ImovelModel> imoveis;
 
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public String getNome() {
         return nome;
@@ -37,7 +42,6 @@ public class ProprietarioModel {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 
     public String getEmail() {
         return email;
@@ -54,6 +58,4 @@ public class ProprietarioModel {
     public void setImoveis(Set<ImovelModel> imoveis) {
         this.imoveis = imoveis;
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.sistemamultiversa.ProjetoMultiversa.service;
 
 import com.sistemamultiversa.ProjetoMultiversa.model.ProprietarioModel;
 import com.sistemamultiversa.ProjetoMultiversa.repositorio.ProprietarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,10 +11,11 @@ import java.util.Optional;
 @Service
 public class ProprietarioService {
 
-    private final ProprietarioRepository proprietarioRepository;
+    @Autowired
+    private ProprietarioRepository proprietarioRepository;
 
-    public ProprietarioService(ProprietarioRepository proprietarioRepository) {
-        this.proprietarioRepository = proprietarioRepository;
+    public ProprietarioModel salvar(ProprietarioModel proprietario) {
+        return proprietarioRepository.save(proprietario);
     }
 
     public List<ProprietarioModel> listarTodos() {
@@ -24,11 +26,12 @@ public class ProprietarioService {
         return proprietarioRepository.findById(id);
     }
 
-    public ProprietarioModel salvar(ProprietarioModel proprietario) {
-        return proprietarioRepository.save(proprietario);
+    public static ProprietarioModel update(Long id, ProprietarioModel proprietario) {
+        return proprietario;
     }
 
-    public void deletar(Long id) {
-        proprietarioRepository.deleteById(id);
+    public static void deleteById(Long id) {
     }
+
+
 }
