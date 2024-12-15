@@ -41,7 +41,18 @@ public class ProprietarioController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    
+
+
+    @PutMapping("/proprietario/{id}")
+    public ResponseEntity<ProprietarioModel> atualizarProprietario(@PathVariable Long id, @RequestBody ProprietarioModel proprietario) {
+        return proprietarioService.buscarPorId(id)
+                .map(proprietarioExistente -> {
+                    proprietario.setId(id);
+                    ProprietarioModel proprietarioAtualizado = proprietarioService.salvar(proprietario);
+                    return ResponseEntity.ok(proprietarioAtualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {

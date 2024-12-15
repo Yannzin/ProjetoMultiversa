@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/imoveis")
+@RequestMapping("/imovel")
 public class ImovelController {
 
     private final ImovelService imovelService;
@@ -17,6 +17,12 @@ public class ImovelController {
     public ImovelController(ImovelService imovelService) {
         this.imovelService = imovelService;
     }
+
+    @PostMapping("/create")
+    public ImovelModel salvar(@RequestBody ImovelModel imovel) {
+        return imovelService.salvar(imovel);
+    }
+
 
     @GetMapping
     public List<ImovelModel> listarTodos() {
@@ -30,10 +36,18 @@ public class ImovelController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ImovelModel salvar(@RequestBody ImovelModel imovel) {
-        return imovelService.salvar(imovel);
+
+    @PutMapping("/imovel/{id}")
+    public ResponseEntity<ImovelModel> atualizarImovel(@PathVariable Long id, @RequestBody ImovelModel imovel) {
+        return imovelService.buscarPorId(id)
+                .map(imovelExistente -> {
+                    imovel.setId(id);
+                    ImovelModel imovelAtualizado = imovelService.salvar(imovel);
+                    return ResponseEntity.ok(imovelAtualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {

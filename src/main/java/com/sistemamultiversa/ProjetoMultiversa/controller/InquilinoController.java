@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/inquilinos")
+@RequestMapping("/inquilino")
 public class InquilinoController {
 
     @Autowired
     private InquilinoService inquilinoService;
+
+    @PostMapping("/create")
+    public InquilinoModel salvar(@RequestBody InquilinoModel inquilino) {
+        return inquilinoService.salvar(inquilino);
+    }
 
     @GetMapping
     public List<InquilinoModel> listarTodos() {
@@ -28,9 +33,16 @@ public class InquilinoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public InquilinoModel salvar(@RequestBody InquilinoModel inquilino) {
-        return inquilinoService.salvar(inquilino);
+
+    @PutMapping("/inquilino/{id}")
+    public ResponseEntity<InquilinoModel> atualizarInquilino(@PathVariable Long id, @RequestBody InquilinoModel inquilino) {
+        return inquilinoService.buscarPorId(id)
+                .map(inquilinoExistente -> {
+                    inquilino.setId(id);
+                    InquilinoModel inquilinoAtualizado = inquilinoService.salvar(inquilino);
+                    return ResponseEntity.ok(inquilinoAtualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

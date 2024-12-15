@@ -17,6 +17,13 @@ public class AluguelController {
         this.aluguelService = aluguelService;
     }
 
+
+    @PostMapping("/create")
+    public ResponseEntity<AluguelModel> salvar(@RequestBody AluguelModel aluguel) {
+        return ResponseEntity.ok(aluguelService.salvar(aluguel));
+    }
+
+
     @GetMapping
     public List<AluguelModel> listarTodos() {
         return aluguelService.listarTodos();
@@ -29,9 +36,16 @@ public class AluguelController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public AluguelModel salvar(@RequestBody AluguelModel aluguel) {
-        return aluguelService.salvar(aluguel);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AluguelModel> atualizar(@PathVariable Long id, @RequestBody AluguelModel aluguel) {
+        return aluguelService.buscarPorId(id)
+                .map(aluguelExistente -> {
+                    aluguel.setId(id); // Garante que o ID do objeto a ser atualizado permaneça o mesmo
+                    AluguelModel aluguelAtualizado = aluguelService.salvar(aluguel);
+                    return ResponseEntity.ok(aluguelAtualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
 
