@@ -1,7 +1,9 @@
 package com.sistemamultiversa.ProjetoMultiversa.controller;
 
 import com.sistemamultiversa.ProjetoMultiversa.model.AluguelModel;
+import com.sistemamultiversa.ProjetoMultiversa.model.ImovelModel;
 import com.sistemamultiversa.ProjetoMultiversa.service.AluguelService;
+import com.sistemamultiversa.ProjetoMultiversa.service.ImovelService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +49,13 @@ public class AluguelController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<AluguelModel> update(@PathVariable Long id, @RequestBody AluguelModel aluguel) {
+        return ResponseEntity.ok(AluguelService.update(id, aluguel));
+    }
+
 
 
     @DeleteMapping("/{id}")

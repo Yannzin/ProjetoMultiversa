@@ -45,6 +45,13 @@ public class InquilinoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<InquilinoModel> update(@PathVariable Long id, @RequestBody InquilinoModel inquilino) {
+        return ResponseEntity.ok(InquilinoService.update(id, inquilino));
+    }
+
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         inquilinoService.deletar(id);

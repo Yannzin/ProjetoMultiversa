@@ -49,6 +49,13 @@ public class ImovelController {
     }
 
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ImovelModel> update(@PathVariable Long id, @RequestBody ImovelModel imovel) {
+        return ResponseEntity.ok(ImovelService.update(id, imovel));
+    }
+
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         imovelService.deletar(id);
